@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-fluid">
+    <ul>
+        <li><a href="{{ url_for('index') }}">Inicio</a></li>
+        <li><a href="{{ url_for('entrada_costos') }}">Costos</a></li>
+        <p></p><p></p><p></p>
+        {% if activar == 1 %}
+            <li><a href="{{ url_for('ir_probabilidades') }}">Probabilidades</a></li>
+            <li><a href="{{ url_for('ir_perfiles') }}">Perfiles</a></li>
+            <li><a href="{{ url_for('ir_parametros') }}">Días</a></li>
+            <p></p><p></p><p></p>
+            <li><a href="{{ url_for('mostrar_simulacion') }}">Resultados</a></li>
+            <li><a href="{{ url_for('graficar_total') }}">Gráfica total</a></li>
+            <li><a href="{{ url_for('graficar_aparatos') }}">Gráfica por aparato</a></li>
+            <li><a href="{{ url_for('graficar_costos') }}">Gráfica costos</a></li>
+            <li><a href="{{ url_for('graficar_cajas') }}">Gráfica por período</a></li>
+            <li><a href="{{ url_for('graficar_curva') }}">Curva de duración</a></li>
+            <li><a href="{{ url_for('generar_estadisticas') }}">Estadísticas</a></li>
+        {% endif %}
+    </ul>
+</div>
+<div class="container-fluid" style="margin-left:20%;width:auto;">
+    <form class="form-inline" method="POST" action="{{ url_for('guardar_perfiles') }}">
+        <div class="container-fluid">
+            <h4 class="titulo"><strong>Perfil 1</strong></h4><br>
+            <div class="container-fluid">
+                <label class="titulo control-label" for="perfil1">Número de hogares </label>
+                <input type="number" class="form-control input-pequena" name="perfil1" id="perfil1" min="0" value="10">
+                <br><br>
+                <table class="table tabla-mediana table-hover table-bordered titulo text-center">
+                    <thead>
+                    <tr>
+                        <th class="text-center">APARATO</th>
+                        <th class="text-center">CANTIDAD</th>
+                        <th class="text-center">POTENCIA (W)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for aparato in aparatos %}
+                    <tr>
+                        <td>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="1_{{ aparato }}" id="1_{{ aparato }}" onclick="disable(this.checked, this.id)"> {{ aparato }} </label>
+                            </div>
+                        </td>
+                        <td><input type="number" class="form-control" name="cantidad1_{{ aparato }}"
+                                   id="cantidad1_{{ aparato }}" min="0" value="1"></td>
+                        <td><input type="number" class="form-control" name="potencia1_{{ aparato }}"
+                                   id="potencia1_{{ aparato }}" min="0" value="10"></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br><br>
+        <div class="container-fluid">
+            <h4 class="titulo"><strong>Perfil 2</strong></h4><br>
+            <div class="container-fluid">
+                <label class="titulo control-label" for="perfil2">Número de hogares </label>
+                <input type="number" class="form-control input-pequena" name="perfil2" id="perfil2" min="0" value="10">
+                <br><br>
+                <table class="table tabla-mediana table-hover table-bordered titulo text-center">
+                    <thead>
+                    <tr>
+                        <th class="text-center">APARATO</th>
+                        <th class="text-center">CANTIDAD</th>
+                        <th class="text-center">POTENCIA (W)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for aparato in aparatos %}
+                    <tr>
+                        <td>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="2_{{ aparato }}" id="2_{{ aparato }}"  onclick="disable(this.checked, this.id)"> {{ aparato }} </label>
+                            </div>
+                        </td>
+                        <td><input type="number" class="form-control" name="cantidad2_{{ aparato }}"
+                                   id="cantidad2_{{ aparato }}" min="0" value="1"></td>
+                        <td><input type="number" class="form-control" name="potencia2_{{ aparato }}"
+                                   id="potencia2_{{ aparato }}" min="0" value="10"></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-5 col-sm-5">
+                <button class="titulo btn btn-default" type="submit">Guardar</button>
+            </div>
+            <br><br>
+        </div>
+    </form>
+</div>
+<script>
+    for (var i=1; i<3; i++) {
+        {% for aparato in aparatos %}
+            can = "cantidad" + i + "_" + "{{ aparato }}"
+            pot = "potencia" + i + "_" + "{{ aparato }}"
+            document.getElementById(can).disabled = true;
+            document.getElementById(pot).disabled = true;
+        {% endfor %}
+    }
+    function disable(enable, id) {
+        can = "cantidad" + id
+        pot = "potencia" + id
+        document.getElementById(can).disabled = !enable;
+        document.getElementById(pot).disabled = !enable;
+    }
+
+{% if  activar == 1 %}
+    var aparatos = {{ aparatos | safe }};
+    var perfiles = {{ perfiles | safe }};
+
+    for (var i = 0; i < perfiles.length; i++) {
+        document.getElementById("perfil"+perfiles[i].id).value = perfiles[i].cantidad;
+        for (var k = 0; k < perfiles[i].aparatos.length; k++) {
+            document.getElementById(perfiles[i].id+"_"+perfiles[i].aparatos[k].nombre).checked = true;
+            document.getElementById("cantidad"+perfiles[i].id+"_"+perfiles[i].aparatos[k].nombre).value = perfiles[i].aparatos[k].cantidad;
+            document.getElementById("cantidad"+perfiles[i].id+"_"+perfiles[i].aparatos[k].nombre).disabled = false;
+            document.getElementById("potencia"+perfiles[i].id+"_"+perfiles[i].aparatos[k].nombre).value = perfiles[i].aparatos[k].potencia;
+            document.getElementById("potencia"+perfiles[i].id+"_"+perfiles[i].aparatos[k].nombre).disabled = false;
+        }
+    }
+{% endif %}
+
+
+</script>
+{% endblock %}

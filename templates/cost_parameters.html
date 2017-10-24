@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-fluid">
+    <ul>
+        <li><a href="{{ url_for('index') }}">Inicio</a></li>
+        <li><a href="{{ url_for('entrada_costos') }}">Costos</a></li>
+        <p></p><p></p><p></p>
+        {% if  activar == 1 %}
+            <li><a href="{{ url_for('ir_probabilidades') }}">Probabilidades</a></li>
+            <li><a href="{{ url_for('ir_perfiles') }}">Perfiles</a></li>
+            <li><a href="{{ url_for('ir_parametros') }}">Días</a></li>
+            <p></p><p></p><p></p>
+            <li><a href="{{ url_for('mostrar_simulacion') }}">Resultados</a></li>
+            <li><a href="{{ url_for('graficar_total') }}">Gráfica total</a></li>
+            <li><a href="{{ url_for('graficar_aparatos') }}">Gráfica por aparato</a></li>
+            <li><a href="{{ url_for('graficar_costos') }}">Gráfica costos</a></li>
+            <li><a href="{{ url_for('graficar_cajas') }}">Gráfica por período</a></li>
+            <li><a href="{{ url_for('graficar_curva') }}">Curva de duración</a></li>
+            <li><a href="{{ url_for('generar_estadisticas') }}">Estadísticas</a></li>
+        {% endif %}
+    </ul>
+</div>
+<div class="container-fluid" style="margin-left:20%;width:auto;">
+    <form class="form-inline" method="POST" action="{{ url_for('entrada_parametros_costos') }}">
+        <div class="container">
+            <h4 class="titulo"><strong>Costos de capital (CAPEX)</strong></h4><br>
+            <div class="container">
+                <label class="titulo control-label" for="inversion">Costo de inversión solar (USD / Wp):</label>
+                <input type="number" class="form-control input-pequena" name="inversion" id="inversion" min="0" step="0.01" value="{{ inversion }}">
+            </div>
+            <div class="container">
+                <label class="titulo control-label" for="reposicion">Costo de reposición del sistema fotovoltaico (USD / Wp):</label>
+                <input type="number" class="form-control input-pequena" name="reposicion" id="reposicion" min="0" step="0.01" value="{{ reposicion }}">
+            </div>
+            <br><br>
+            <h4 class="titulo"><strong>Costos de operación (OPEX)</strong></h4><br>
+            <div class="container">
+                <label class="titulo control-label" for="baterias">Costo de uso de las baterías (USD / Wh):</label>
+                <input type="number" class="form-control input-pequena" name="baterias" id="baterias" min="0" step="0.01" value="{{ baterias }}">
+            </div>
+            <div class="container">
+                <label class="titulo control-label" for="mantenimiento">Costo de mantenimiento mensual por cliente (USD):</label>
+                <input type="number" class="form-control input-pequena" name="mantenimiento" id="mantenimiento" min="0" step="0.01" value="{{ mantenimiento }}">
+            </div>
+        </div>
+        <br><br>
+        <div class="form-group">
+            <div class="col-sm-offset-5 col-sm-5">
+                <button class="titulo btn btn-default" type="submit">Guardar</button>
+            </div>
+            <br><br>
+        </div>
+    </form>
+</div>
+{% endblock %}

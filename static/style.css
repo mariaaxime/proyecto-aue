@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab');
+
+.titulo {
+	font-family: "Roboto Slab";
+}
+
+.jumbotron {
+    background-color: #b3b3ff;
+    padding: 0.5em 0.6em;
+    h2 {
+        font-size: 2em;
+    }
+    p {
+        font-size: 1.2em;
+        .btn {
+            padding: 0.5em;
+        }
+    }
+}
+
+.tabla th{
+	background-color: #ff944d;
+}
+
+td {
+	vertical-align: middle;
+}
+
+.center {
+     float: none;
+     margin-left: auto;
+     margin-right: auto;
+}
+
+.input-pequena {
+    width: 200px;
+}
+
+.tablita {
+    width: 400px;
+}
+
+.boton {
+    width: 150px;
+    height: 50px;
+}
+
+.tabla-mediana{
+    width: 600px;
+}

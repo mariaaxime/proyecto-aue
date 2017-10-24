@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-fluid">
+    <ul>
+        <li><a href="{{ url_for('index') }}">Inicio</a></li>
+        <li><a href="{{ url_for('entrada_costos') }}">Costos</a></li>
+        <p></p><p></p><p></p>
+        {% if activar == 1 %}
+            <li><a href="{{ url_for('ir_probabilidades') }}">Probabilidades</a></li>
+            <li><a href="{{ url_for('ir_perfiles') }}">Perfiles</a></li>
+            <li><a href="{{ url_for('ir_parametros') }}">Días</a></li>
+            <p></p><p></p><p></p>
+            <li><a href="{{ url_for('mostrar_simulacion') }}">Resultados</a></li>
+            <li><a href="{{ url_for('graficar_total') }}">Gráfica total</a></li>
+            <li><a href="{{ url_for('graficar_aparatos') }}">Gráfica por aparato</a></li>
+            <li><a href="{{ url_for('graficar_costos') }}">Gráfica costos</a></li>
+            <li><a href="{{ url_for('graficar_cajas') }}">Gráfica por período</a></li>
+            <li><a href="{{ url_for('graficar_curva') }}">Curva de duración</a></li>
+            <li><a href="{{ url_for('generar_estadisticas') }}">Estadísticas</a></li>
+        {% endif %}
+    </ul>
+</div>
+<div class="container-fluid" style="margin-left:20%;width:auto;">
+    <div class="center-block">
+        <h3 class="text-center"><strong>RESULTADOS DE CONSUMO</strong></h3><br>
+    </div>
+    <table class="table-condensed table-bordered center">
+        <thead>
+        <tr>
+            <th class="text-center">Día</th>
+            <th class="text-center">Periodo</th>
+            {% for aparato in aparatos %}
+            <th class="text-center">{{ aparato }}</th>
+            {% endfor %}
+            <th class="text-center">Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for s in simulacion %}
+        <tr class="item">
+            <td class="text-center">{{ s["dia"] }}</td>
+            <td class="text-center">{{ s["periodo"] }}</td>
+            {% for aparato in aparatos %}
+            <td class="text-center">{{ s[aparato] }} </td>
+            {% endfor %}
+            <td class="text-center">{{ s["total"] }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

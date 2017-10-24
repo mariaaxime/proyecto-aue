@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-fluid">
+    <ul>
+        <li><a href="{{ url_for('index') }}">Inicio</a></li>
+        <li><a href="{{ url_for('entrada_costos') }}">Costos</a></li>
+        <p></p><p></p><p></p>
+        {% if activar == 1 %}
+            <li><a href="{{ url_for('ir_probabilidades') }}">Probabilidades</a></li>
+            <li><a href="{{ url_for('ir_perfiles') }}">Perfiles</a></li>
+            <li><a href="{{ url_for('ir_parametros') }}">Días</a></li>
+            <p></p><p></p><p></p>
+            <li><a href="{{ url_for('mostrar_simulacion') }}">Resultados</a></li>
+            <li><a href="{{ url_for('graficar_total') }}">Gráfica total</a></li>
+            <li><a href="{{ url_for('graficar_aparatos') }}">Gráfica por aparato</a></li>
+            <li><a href="{{ url_for('graficar_costos') }}">Gráfica costos</a></li>
+            <li><a href="{{ url_for('graficar_cajas') }}">Gráfica por período</a></li>
+            <li><a href="{{ url_for('graficar_curva') }}">Curva de duración</a></li>
+            <li><a href="{{ url_for('generar_estadisticas') }}">Estadísticas</a></li>
+        {% endif %}
+    </ul>
+</div>
+<div id="chart" class="container-fluid" style="margin-left:20%;width:auto;margin-right:5%">
+</div>
+<script>
+    var datos = {{ consumo }};
+    var dias = {{ dias }};
+    var periodos = {{ periodos }};
+    var consumo = [];
+    var ejex = [];
+
+    ejex.push('x');
+    consumo.push('Consumo total');
+
+    for (var k=0; k < datos.length; k++) {
+        consumo.push(datos[k]);
+    }
+
+    for (var i = 0; i < dias; i++) {
+        for (var j = 0; j < periodos; j++) {
+            ejex.push('' + (i + 1) + '-' + (j + 1) + '');
+        }
+    }
+
+    console.log(ejex);
+    console.log(consumo);
+
+    var chart = c3.generate({
+        data: {
+            x : 'x',
+            columns: [
+                ejex,
+                consumo,
+            ],
+            type: 'bar'
+        },
+        axis: {
+            x: {
+                type: 'category', // this needed to load string x value
+                tick: {
+                    count: 4
+                },
+                label: {
+                    text: 'Día - Período',
+                    position: 'outer-center'
+                }
+            },
+            y: {
+                label: {
+                    text: 'Consumo',
+                    position: 'outer-middle'
+                }
+            }
+        }
+    });
+
+</script>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-fluid">
+    <ul>
+        <li><a href="{{ url_for('index') }}">Inicio</a></li>
+        <li><a href="{{ url_for('entrada_costos') }}">Costos</a></li>
+        <p></p><p></p><p></p>
+        {% if  activar == 1 %}
+            <li><a href="{{ url_for('ir_probabilidades') }}">Probabilidades</a></li>
+            <li><a href="{{ url_for('ir_perfiles') }}">Perfiles</a></li>
+            <li><a href="{{ url_for('ir_parametros') }}">Días</a></li>
+            <p></p><p></p><p></p>
+            <li><a href="{{ url_for('mostrar_simulacion') }}">Resultados</a></li>
+            <li><a href="{{ url_for('graficar_total') }}">Gráfica total</a></li>
+            <li><a href="{{ url_for('graficar_aparatos') }}">Gráfica por aparato</a></li>
+            <li><a href="{{ url_for('graficar_costos') }}">Gráfica costos</a></li>
+            <li><a href="{{ url_for('graficar_cajas') }}">Gráfica por período</a></li>
+            <li><a href="{{ url_for('graficar_curva') }}">Curva de duración</a></li>
+            <li><a href="{{ url_for('generar_estadisticas') }}">Estadísticas</a></li>
+        {% endif %}
+    </ul>
+</div>
+<div id="chart" class="container-fluid" style="margin-left:20%;width:auto;margin-right:5%">
+</div>
+<script>
+    var dias = {{ dias | safe }};
+    var periodos = {{ periodos | safe }};
+    var datos = {{ consumo | safe }};
+    var apa = [];
+    var ejex = [];
+
+    ejex.push('x');
+
+    for (var i = 0; i < dias; i++) {
+        for (var j = 0; j < periodos; j++) {
+            ejex.push('' + (i + 1) + '-' + (j + 1) + '');
+        }
+    }
+
+    console.log(ejex);
+
+     var chart = c3.generate({
+        data: {
+            x : 'x',
+            columns: [
+            ],
+            type: 'bar'
+        },
+        axis: {
+            x: {
+                type: 'category', // this needed to load string x value
+                tick: {
+                    count: 4
+                },
+                label: {
+                    text: 'Día - Período',
+                    position: 'outer-center'
+                }
+            },
+            y: {
+                label: {
+                    text: 'Consumo',
+                    position: 'outer-middle'
+                }
+            }
+        }
+    });
+
+    var n = datos.length / ((dias*periodos)+1)
+    for (var k = 0; k < n; k++) {
+        apa = datos.splice(0, ((dias*periodos)+1));
+        chart.load({
+            columns: [
+                ejex,
+                apa
+            ]
+        });
+    }
+</script>
+
+{% endblock %}

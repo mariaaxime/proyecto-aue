@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-fluid">
+    <ul>
+        <li><a href="{{ url_for('index') }}">Inicio</a></li>
+        <li><a href="{{ url_for('entrada_costos') }}">Costos</a></li>
+        <p></p><p></p><p></p>
+        {% if  activar == 1 %}
+            <li><a href="{{ url_for('ir_probabilidades') }}">Probabilidades</a></li>
+            <li><a href="{{ url_for('ir_perfiles') }}">Perfiles</a></li>
+            <li><a href="{{ url_for('ir_parametros') }}">Días</a></li>
+            <p></p><p></p><p></p>
+            <li><a href="{{ url_for('mostrar_simulacion') }}">Resultados</a></li>
+            <li><a href="{{ url_for('graficar_total') }}">Gráfica total</a></li>
+            <li><a href="{{ url_for('graficar_aparatos') }}">Gráfica por aparato</a></li>
+            <li><a href="{{ url_for('graficar_costos') }}">Gráfica costos</a></li>
+            <li><a href="{{ url_for('graficar_cajas') }}">Gráfica por período</a></li>
+            <li><a href="{{ url_for('graficar_curva') }}">Curva de duración</a></li>
+            <li><a href="{{ url_for('generar_estadisticas') }}">Estadísticas</a></li>
+        {% endif %}
+    </ul>
+</div>
+<div class="container-fluid" style="margin-left:20%;width:auto;">
+    <form method=post enctype=multipart/form-data action="{{ url_for('upload_file') }}">
+        <div class="form-group">
+            <div class="col-sm-offset-5 col-sm-5">
+                <input class="titulo btn btn-default" type="file" name="file">
+                <button class="titulo btn btn-default" type="submit">Cargar</button>
+            </div>
+            <br><br>
+        </div>
+    </form>
+    <br><br>
+    <form class="form-horizontal" method="POST"  action="{{ url_for('leer_parametros') }}">
+        <div class="form-group">
+            <label class="titulo control-label col-sm-5" for="periodos">Ingresar número de períodos por día</label>
+            <div class="col-sm-4">
+                <input type="number" class="input-pequena form-control" name="periodos" id="periodos" placeholder="Número de períodos"
+                       min="1">
+            </div>
+        </div>
+
+        <br><br>
+        <div class="center container-fluid">
+            <table class="table tablita table-condensed table-hover table-bordered titulo tabla text-center center">
+                <thead>
+                <tr>
+                    <th class="col-xs-6 text-center">APARATOS</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><input type="text" class="form-control" name="aparato1" id="aparato1"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="form-control" name="aparato2" id="aparato2"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="form-control" name="aparato3" id="aparato3"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="form-control" name="aparato4" id="aparato4"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="form-control" name="aparato5" id="aparato5"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="form-control" name="aparato6" id="aparato6"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="form-control" name="aparato7" id="aparato7"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="form-control" name="aparato8" id="aparato8"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="form-control" name="aparato9" id="aparato9"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="form-control" name="aparato10" id="aparato10"></td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-5 col-sm-5">
+                <button type="submit" class="titulo btn btn-default">Siguiente</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-fluid">
+    <ul>
+        <li><a href="{{ url_for('index') }}">Inicio</a></li>
+        <li><a href="{{ url_for('entrada_costos') }}">Costos</a></li>
+        <p></p><p></p><p></p>
+        {% if  activar == 1 %}
+            <li><a href="{{ url_for('ir_probabilidades') }}">Probabilidades</a></li>
+            <li><a href="{{ url_for('ir_perfiles') }}">Perfiles</a></li>
+            <li><a href="{{ url_for('ir_parametros') }}">Días</a></li>
+            <p></p><p></p><p></p>
+            <li><a href="{{ url_for('mostrar_simulacion') }}">Resultados</a></li>
+            <li><a href="{{ url_for('graficar_total') }}">Gráfica total</a></li>
+            <li><a href="{{ url_for('graficar_aparatos') }}">Gráfica por aparato</a></li>
+            <li><a href="{{ url_for('graficar_costos') }}">Gráfica costos</a></li>
+            <li><a href="{{ url_for('graficar_cajas') }}">Gráfica por período</a></li>
+            <li><a href="{{ url_for('graficar_curva') }}">Curva de duración</a></li>
+            <li><a href="{{ url_for('generar_estadisticas') }}">Estadísticas</a></li>
+        {% endif %}
+    </ul>
+</div>
+<div class="container-fluid" style="margin-left:20%;width:auto;">
+    <form class="form-inline" method="POST" action="{{ url_for('mostrar_probabilidades') }}">
+    {% for aparato in aparatos %}
+    <br><h4 class="titulo"><strong>{{ aparato }}</strong></h4><br>
+
+        <h5 class="titulo">Probabilidad de inicio</h5>
+        {% for p in range((periodos|int)+1) %}
+        <div class="form-group">
+            <label class="titulo control-label" for="pi_{{ aparato }}{{ p }}">{{ p }}</label>
+            <div>
+                <input type="number" class="form-control" name="pi_{{ aparato }}{{ p }}" id="pi_{{ aparato }}{{ p }}" min="0" step="0.0001">
+            </div>
+        </div>
+        {% endfor %}
+
+        <br>
+        <br><h5 class="titulo">Probabilidad de duración (períodos)</h5>
+        {% for p in range((periodos|int)+1) %}
+        <div class="form-group">
+            <label class="titulo control-label" for="pd_{{ aparato }}{{ p }}">{{ p }}</label>
+            <div>
+                <input type="number" class="form-control" name="pd_{{ aparato }}{{ p }}" id="pd_{{ aparato }}{{ p }}" min="0" step="0.0001">
+            </div>
+        </div>
+        {% endfor %}
+        <br><br>
+        {% endfor %}
+        <div class="form-group">
+            <div class="col-sm-offset-5 col-sm-5">
+                <button class="titulo btn btn-default" type="submit">Guardar</button>
+            </div>
+            <br><br>
+        </div>
+    </form>
+</div>
+
+<script>
+{% if  activar == 1 %}
+    var aparatos = {{ aparatos | safe }};
+    var probas = {{ probabilidades | safe }};
+    var periodos = {{ periodos }};
+
+    for (var i = 0; i < probas.length; i++) {
+        for (var j = 0; j < aparatos.length; j++) {
+            if (probas[i].aparato == aparatos[j]) {
+                for (var k = 0; k <= periodos; k++) {
+                    document.getElementById("pi_"+aparatos[j]+k).value = probas[i].inicio[k];
+                    document.getElementById("pd_"+aparatos[j]+k).value = probas[i].duracion[k];
+                    console.log("pd_"+aparatos[j]+i);
+                }
+            }
+
+        }
+    }
+{% endif %}
+</script>
+
+{% endblock %}

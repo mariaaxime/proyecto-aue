@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-fluid">
+    <ul>
+        <li><a href="{{ url_for('index') }}">Inicio</a></li>
+        <li><a href="{{ url_for('entrada_costos') }}">Costos</a></li>
+        <p></p><p></p><p></p>
+        {% if  activar == 1 %}
+            <li><a href="{{ url_for('ir_probabilidades') }}">Probabilidades</a></li>
+            <li><a href="{{ url_for('ir_perfiles') }}">Perfiles</a></li>
+            <li><a href="{{ url_for('ir_parametros') }}">Días</a></li>
+            <p></p><p></p><p></p>
+            <li><a href="{{ url_for('mostrar_simulacion') }}">Resultados</a></li>
+            <li><a href="{{ url_for('graficar_total') }}">Gráfica total</a></li>
+            <li><a href="{{ url_for('graficar_aparatos') }}">Gráfica por aparato</a></li>
+            <li><a href="{{ url_for('graficar_costos') }}">Gráfica costos</a></li>
+            <li><a href="{{ url_for('graficar_cajas') }}">Gráfica por período</a></li>
+            <li><a href="{{ url_for('graficar_curva') }}">Curva de duración</a></li>
+            <li><a href="{{ url_for('generar_estadisticas') }}">Estadísticas</a></li>
+        {% endif %}
+    </ul>
+</div>
+<div id="chart" class="container-fluid" style="margin-left:20%;width:auto;margin-right:5%">
+</div>
+<script>
+    var anios = {{ anios }};
+    var capex = {{ capex }};
+    var opex = {{ opex }};
+
+    console.log(capex);
+    console.log(opex);
+
+     var chart = c3.generate({
+        data: {
+            columns: [
+                capex,
+                opex
+            ],
+        },
+        axis: {
+            x: {
+                label: {
+                    text: 'Año',
+                    position: 'outer-center'
+                }
+            },
+            y: {
+                label: {
+                    text: 'Costo',
+                    position: 'outer-middle'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

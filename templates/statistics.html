@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-fluid">
+    <ul>
+        <li><a href="{{ url_for('index') }}">Inicio</a></li>
+        <li><a href="{{ url_for('entrada_costos') }}">Costos</a></li>
+        <p></p><p></p><p></p>
+        {% if activar == 1 %}
+            <li><a href="{{ url_for('ir_probabilidades') }}">Probabilidades</a></li>
+            <li><a href="{{ url_for('ir_perfiles') }}">Perfiles</a></li>
+            <li><a href="{{ url_for('ir_parametros') }}">Días</a></li>
+            <p></p><p></p><p></p>
+            <li><a href="{{ url_for('mostrar_simulacion') }}">Resultados</a></li>
+            <li><a href="{{ url_for('graficar_total') }}">Gráfica total</a></li>
+            <li><a href="{{ url_for('graficar_aparatos') }}">Gráfica por aparato</a></li>
+            <li><a href="{{ url_for('graficar_costos') }}">Gráfica costos</a></li>
+            <li><a href="{{ url_for('graficar_cajas') }}">Gráfica por período</a></li>
+            <li><a href="{{ url_for('graficar_curva') }}">Curva de duración</a></li>
+            <li><a href="{{ url_for('generar_estadisticas') }}">Estadísticas</a></li>
+        {% endif %}
+    </ul>
+</div>
+<div class="container-fluid" style="margin-left:20%;width:auto;">
+    <div class="center-block">
+        <h3 class="text-center"><strong>ESTADÍSTICAS</strong></h3><br>
+    </div>
+    <table class="table table-bordered center tabla-mediana">
+        <thead>
+        <tr>
+            <th class="text-center">Medida</th>
+            <th class="text-center">Valor</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="item">
+            <td class="text-center">Costo promedio mensual [USD / Wp]</td>
+            <td class="text-center">{{ costo }}</td>
+        </tr>
+        <tr class="item">
+            <td class="text-center">Coeficiente de variación por períodos [%]</td>
+            <td class="text-center">{{ variacion }}</td>
+        </tr>
+        <tr class="item">
+            <td class="text-center">Consumo promedio diario [W]</td>
+            <td class="text-center">{{ consumo }}</td>
+        </tr>
+        <tr class="item">
+            <td class="text-center">Pico diario [W]</td>
+            <td class="text-center">{{ peak }}</td>
+        </tr>
+        <tr class="item">
+            <td class="text-center">Consumo promedio mensual por cliente [W]</td>
+            <td class="text-center">{{ month }}</td>
+        </tr>
+        <tr class="item">
+            <td class="text-center">Factor de carga [%]</td>
+            <td class="text-center">{{ factor }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

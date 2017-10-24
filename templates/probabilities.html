@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-fluid">
+    <ul>
+        <li><a href="{{ url_for('index') }}">Inicio</a></li>
+        <li><a href="{{ url_for('entrada_costos') }}">Costos</a></li>
+        <p></p><p></p><p></p>
+        {% if activar == 1 %}
+            <li><a href="{{ url_for('ir_probabilidades') }}">Probabilidades</a></li>
+            <li><a href="{{ url_for('ir_perfiles') }}">Perfiles</a></li>
+            <li><a href="{{ url_for('ir_parametros') }}">Días</a></li>
+            <p></p><p></p><p></p>
+            <li><a href="{{ url_for('mostrar_simulacion') }}">Resultados</a></li>
+            <li><a href="{{ url_for('graficar_total') }}">Gráfica total</a></li>
+            <li><a href="{{ url_for('graficar_aparatos') }}">Gráfica por aparato</a></li>
+            <li><a href="{{ url_for('graficar_costos') }}">Gráfica costos</a></li>
+            <li><a href="{{ url_for('graficar_cajas') }}">Gráfica por período</a></li>
+            <li><a href="{{ url_for('graficar_curva') }}">Curva de duración</a></li>
+            <li><a href="{{ url_for('generar_estadisticas') }}">Estadísticas</a></li>
+        {% endif %}
+    </ul>
+</div>
+<div class="container-fluid" style="margin-left:20%;width:auto;">
+    {% for proba in probabilidades %}
+    <br><h4 class="titulo"><strong>{{ proba.aparato }}</strong></h4><br>
+    <h5 class="titulo"><strong>Probabilidad de inicio</strong></h5>
+    {% for i in proba.inicio %}
+        <p style="margin-left:2em">{{ i }}</p>
+    {% endfor %}
+    <h5 class="titulo"><strong>Probabilidad de duración (períodos)</strong></h5>
+    {% for d in proba.duracion %}
+        <p style="margin-left:2em">{{ d }}</p>
+    {% endfor %}
+    {% endfor %}
+    <form class="form-horizontal" method="POST"  action="{{ url_for('leer_perfiles') }}">
+        <div class="form-group">
+            <div class="col-sm-offset-5 col-sm-5">
+                <button class="titulo btn btn-default" type="submit">Siguiente</button>
+            </div>
+            <br><br>
+        </div>
+    </form>
+</div>
+{% endblock %}

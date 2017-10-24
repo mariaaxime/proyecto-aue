@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-fluid">
+    <ul>
+        <li><a href="{{ url_for('index') }}">Inicio</a></li>
+        <li><a href="{{ url_for('entrada_costos') }}">Costos</a></li>
+        <p></p><p></p><p></p>
+        {% if activar == 1 %}
+            <li><a href="{{ url_for('ir_probabilidades') }}">Probabilidades</a></li>
+            <li><a href="{{ url_for('ir_perfiles') }}">Perfiles</a></li>
+            <li><a href="{{ url_for('ir_parametros') }}">Días</a></li>
+            <p></p><p></p><p></p>
+            <li><a href="{{ url_for('mostrar_simulacion') }}">Resultados</a></li>
+            <li><a href="{{ url_for('graficar_total') }}">Gráfica total</a></li>
+            <li><a href="{{ url_for('graficar_aparatos') }}">Gráfica por aparato</a></li>
+            <li><a href="{{ url_for('graficar_costos') }}">Gráfica costos</a></li>
+            <li><a href="{{ url_for('graficar_cajas') }}">Gráfica por período</a></li>
+            <li><a href="{{ url_for('graficar_curva') }}">Curva de duración</a></li>
+            <li><a href="{{ url_for('generar_estadisticas') }}">Estadísticas</a></li>
+        {% endif %}
+    </ul>
+</div>
+<div class="container-fluid" style="margin-left:20%;width:auto;">
+    <form class="form-inline" method="POST" action="{{ url_for('simular') }}">
+        <div class="col-xs-6 text-center"><strong>Número de días a simular:</strong></div>
+        <div class="col-xs-6 text-center"><input type="number" class="form-control input-pequena" min="0" name="numDias" id="numDias"></div>
+        <div class="form-group">
+            <div class="col-sm-offset-5 col-sm-5">
+                <button class="titulo btn btn-default" type="submit">Guardar</button>
+            </div>
+            <br><br>
+        </div>
+    </form>
+</div>
+<script>
+{% if  activar == 1 %}
+    var dias = {{ dias }};
+
+    document.getElementById("numDias").value = dias;
+{% endif %}
+</script>
+
+{% endblock %}
